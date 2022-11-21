@@ -32,9 +32,11 @@ def serialize_tag(tag):
 
 
 def index(request):
-    posts = Post.objects.annotate(Count('likes'))
-    popular_posts = sorted(posts, key=get_post_likes_count)
-    most_popular_posts = popular_posts[:-6:-1]
+    most_popular_posts = Post.objects.annotate(Count('likes')).order_by('-likes__count')[:6]
+
+    # posts = Post.objects.annotate(Count('likes'))
+    # popular_posts = sorted(posts, key=get_post_likes_count)
+    # most_popular_posts = popular_posts[:-6:-1]
 
     fresh_posts = Post.objects.order_by('published_at')
     most_fresh_posts = list(fresh_posts)[-5:]
