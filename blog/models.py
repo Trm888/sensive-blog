@@ -1,7 +1,8 @@
-from django.db import models
-from django.urls import reverse
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models import Count
+from django.urls import reverse
+
 
 class PostQuerySet(models.QuerySet):
 
@@ -28,6 +29,8 @@ class PostQuerySet(models.QuerySet):
         for post in most_popular_posts:
             post.comments_count = count_for_id[post.id]
         return most_popular_posts
+
+
 class TagQuerySet(models.QuerySet):
 
     def popular(self):
