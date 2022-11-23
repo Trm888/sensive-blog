@@ -1,6 +1,6 @@
-from django.shortcuts import render
 from blog.models import Comment, Post, Tag
 from django.db.models import Count, Prefetch
+from django.shortcuts import render
 
 
 def serialize_post_optimized(post):
@@ -15,13 +15,6 @@ def serialize_post_optimized(post):
         'tags': [serialize_tag_optimized(tag) for tag in post.tags.all()],
         'first_tag_title': post.tags.all()[0].title,
     }
-
-
-# def serialize_tag(tag):
-#     return {
-#         'title': tag.title,
-#         'posts_with_tag': tag.posts.count,
-#     }
 
 
 def serialize_tag_optimized(tag):
