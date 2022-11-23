@@ -17,11 +17,11 @@ def serialize_post_optimized(post):
     }
 
 
-def serialize_tag(tag):
-    return {
-        'title': tag.title,
-        'posts_with_tag': tag.posts.count,
-    }
+# def serialize_tag(tag):
+#     return {
+#         'title': tag.title,
+#         'posts_with_tag': tag.posts.count,
+#     }
 
 
 def serialize_tag_optimized(tag):
@@ -65,7 +65,7 @@ def post_detail(request, slug):
 
     likes = post.likes.all()
 
-    related_tags = post.tags.all()
+    related_tags = post.tags.annotate(Count('posts'))
 
     serialized_post = {
         'title': post.title,
@@ -76,7 +76,7 @@ def post_detail(request, slug):
         'image_url': post.image.url if post.image else None,
         'published_at': post.published_at,
         'slug': post.slug,
-        'tags': [serialize_tag(tag) for tag in related_tags],
+        'tags': [serialize_tag_optimized(tag) for tag in related_tags],
     }
 
     most_popular_tags = Tag.objects.popular()[:5]
